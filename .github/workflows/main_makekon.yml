@@ -58,4 +58,4 @@ jobs:
         with:
           app-name: 'makekon'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_62163E0F7DE94A76B985C74C5D1793FD }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9D8DBA30431E48D19592C895D2E666C8 }}
