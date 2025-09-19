@@ -5,3 +5,4 @@ pandas
 pyautogui
 python-pptx
 python-dotenv
+pyyaml
