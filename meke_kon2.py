@@ -152,29 +152,18 @@ tab1, tab2 = st.tabs(["引合情報（前処理を確認）", "KON（生成と�
 with tab1:
     st.header("📝 オリエンテーション情報をアップロード（前処理付き）")
 
-    col_opt1, col_opt2 = st.columns(2)
-    with col_opt1:
-        pii_mode = st.radio("個人情報の扱い", ["mask", "remove"], index=0,
-                            help="mask: 値を[MASKED]に置換 / remove: 行ごと削除")
-    with col_opt2:
-        mask_url = st.checkbox("URLをマスクする（[URL]に置換）", value=True)
-
     uploaded_file = st.file_uploader("ファイルをアップロード（txtのみ）", type=["txt"])
     if uploaded_file is not None:
         raw = uploaded_file.read().decode("utf-8", errors="ignore")
         st.session_state.orien_text_raw = raw
-        cleaned, logs = sanitize_input(raw, mask_url=mask_url, pii_mode=pii_mode)
+        # 常に remove & mask_url=True を適用
+        cleaned, logs = sanitize_input(raw, mask_url=True, pii_mode="remove")
         st.session_state.orien_text_clean = cleaned
         st.session_state.sanitize_logs = logs
 
-    col_a, col_b = st.columns(2)
-    with col_a:
-        st.subheader("原文（前処理前）")
-        st.text_area("前処理前", value=st.session_state.orien_text_raw, height=300)
-
-    with col_b:
-        st.subheader("前処理後（この内容をモデルに送信）")
-        st.text_area("前処理後（送信予定）", value=st.session_state.orien_text_clean, height=300)
+    # 前処理後テキストのみ表示
+    st.subheader("前処理後（この内容をモデルに送信）")
+    st.text_area("前処理後（送信予定）", value=st.session_state.orien_text_clean, height=300)
 
     # ログ表示
     st.subheader("除去・マスクログ")
