@@ -144,13 +144,15 @@ if "generated_sections" not in st.session_state:
 
 #====================================================================
 # タブ構成
-tab1, tab2 = st.tabs(["オリエン議事読込", "KON生成"])
+tab1, tab2 = st.tabs(["オリエン議事読込", "KON下書き"])
 
 # -------------------------
 # タブ1：前処理の可視化
 # -------------------------
 with tab1:
-    st.header("手順1：オリエン議事録をアップロード。手順2：「KON生成タブ」へ移動してボタンを押す")
+    st.header("キックオフノートの下書きアプリ")
+    st.subheader("手順1：オリエン議事録をアップロード")
+    st.subheader("手順2：「KON下書き」タブへ移動してボタンを押す")
 
     uploaded_file = st.file_uploader("ファイルをアップロード（テキストファイルのみです）", type=["txt"])
     if uploaded_file is not None:
@@ -162,11 +164,11 @@ with tab1:
         st.session_state.sanitize_logs = logs
 
     # 前処理後テキストのみ表示
-    st.subheader("前処理後（この内容をモデルに送信）")
-    st.text_area("前処理後（送信予定）", value=st.session_state.orien_text_clean, height=300)
+    st.subheader("★個人情報を取り除く処理をした後の情報です★")
+    st.text_area("この内容で下書きします", value=st.session_state.orien_text_clean, height=300)
 
     # ログ表示
-    st.subheader("除去・マスクログ")
+    st.subheader("削除した個人情報のリスト（確認用）")
     if st.session_state.sanitize_logs:
         df = pd.DataFrame(st.session_state.sanitize_logs)
         st.dataframe(df, use_container_width=True)
@@ -186,7 +188,7 @@ with tab1:
 # タブ2：生成と編集
 # -------------------------
 with tab2:
-    st.header("✨ キックオフノート作成")
+    st.header("✨ キックオフノートの下書き生成 ✨")
 
     # --- YAMLファイル読み込み関数 ---
     def load_kon_yaml():
@@ -207,11 +209,11 @@ with tab2:
     if st.session_state.orien_text_clean:
         st.success("前処理済みテキストが読み込まれています。")
     else:
-        st.warning("タブ1で前処理を行ってから生成してください。")
+        st.warning("オリエン議事読込を行ってから下書きしてください。")
 
     # --- 自動生成ボタン ---
-    if st.session_state.orien_text_clean and kon_prompts and st.button("調査企画を生成"):
-        with st.spinner("Azure OpenAI に問い合わせ中..."):
+    if st.session_state.orien_text_clean and kon_prompts and st.button("KONを下書き"):
+        with st.spinner("Azure OpenAI が考え中..."):
             try:
                 generated_sections = {}
 
