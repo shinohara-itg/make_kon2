@@ -153,7 +153,11 @@ with tab1:
     st.header("キックオフノートの下書きアプリ")
     st.subheader("手順1：オリエン議事録をアップロード")
     st.subheader("手順2：「KON下書き」タブへ移動してボタンを押す")
-
+    # マニュアルリンク追加
+    st.markdown(
+        '[📖 詳しいマニュアルはこちら](https://delightful-river-09a986000.2.azurestaticapps.net)',
+        unsafe_allow_html=True
+    )
     uploaded_file = st.file_uploader("ファイルをアップロード（テキストファイルのみです）", type=["txt"])
     if uploaded_file is not None:
         raw = uploaded_file.read().decode("utf-8", errors="ignore")
